@@ -491,7 +491,12 @@
     WOW.prototype.isVisible = function(box) {
       var bottom, offset, top, viewBottom, viewTop;
       offset = box.getAttribute('data-wow-offset') || this.config.offset;
-      viewTop = (this.config.scrollContainer && this.config.scrollContainer.scrollTop) || window.pageYOffset;
+      
+      var style = window.getComputedStyle(box);
+      var matrix = new WebKitCSSMatrix(style.webkitTransform);
+      var translateY = matrix.m42;
+      
+      viewTop = (this.config.scrollContainer && translateY) || window.pageYOffset;
       viewBottom = viewTop + Math.min(this.element.clientHeight, this.util().innerHeight()) - offset;
       top = this.offsetTop(box);
       bottom = top + box.clientHeight;
